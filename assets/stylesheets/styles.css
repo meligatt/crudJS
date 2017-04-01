@@ -132,6 +132,16 @@ section {
   padding: 1.5em;
   width: 180px;
 }
+.button--signin {
+  background-color: #0D3880;
+  border: 2px solid #0D3880;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.6em;
+  padding: 1em;
+  width: 120px;
+}
 
 .button--open-modal {
   color: white;
