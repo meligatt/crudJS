@@ -76,7 +76,7 @@ class Store {
      });
 
     if (user.length > 0) {
-      callback(user);
+      callback(user[0]);
     } else {
       callback('credentials not found');
     }

@@ -1,4 +1,4 @@
-class SigninController {
+class Controller {
   constructor(store, view){
     this.store= store;
     this.view = view;
@@ -8,9 +8,14 @@ class SigninController {
 
   login( {$username , $password} ){
     const userCredentials = { username: $username.value, password: $password.value };
-
     this.store.findUser(userCredentials, (data) => {
-      this.view.goToCheckout(data);
+
+      if (data.hasOwnProperty('name')) {
+        this.view.setCheckoutVisibility(data, true);
+      } else {
+        this.view.clearSigninForm(data);
+      }
+
     });
   }
 

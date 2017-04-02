@@ -1,6 +1,10 @@
 const store = new Store();
-const signinView = new SigninView();
-const signinController = new SigninController(store, signinView);
+
+const view = new View();
+const controller = new Controller(store, view);
+
+// const checkoutView = new CheckoutView();
+// const checkoutController = new CheckoutController(checkoutView);
 // const jobAdView = new JobadView();
 // const store = new Store('jobadsStore');
 // const jobadController = new JobadController(store, jobAdView);
