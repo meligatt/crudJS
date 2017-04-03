@@ -11,7 +11,7 @@ class View {
     this.$checkoutSection = document.querySelector(`#checkout`);
     this.$customerNameSpan = document.querySelector(`.customer-name`);
 
-
+    this.loggedIn = false;
   }
 
   validate() {
@@ -19,6 +19,27 @@ class View {
     // empty
     // string
     // trim
+  }
+
+  setCheckoutVisibility(visible) {
+    if (visible) {
+      this.$signinSection.style.display = `none`;
+      this.$checkoutSection.style.display = `block`;
+    }
+    return false;
+  }
+
+  setLoggedInStatus(data, status){
+    this.loggedIn = status;
+    if (this.loggedIn) {
+      this.$customerNameSpan.textContent = data.name;
+    }
+  }
+
+  clearSigninForm(msg) {
+    this.$username.value='';
+    this.$password.value='';
+    console.log("msg: ",msg);
   }
 
   bindLogin(handler) {
@@ -29,31 +50,22 @@ class View {
     });
   }
 
-  setCheckoutVisibility(data, visible) {
-     if (visible) {
-      this.$signinSection.style.display = `none`;
-      this.$checkoutSection.style.display = `block`;
-      this.$customerNameSpan.textContent = data.name;
+  bindLoadProducts(handler) {
+    if (this.loggedIn) {
+      handler(this.loggedIn);
     }
-     return false;
   }
 
-  clearSigninForm(msg) {
-    this.$username.value='';
-    this.$password.value='';
-    console.log("msg: ",msg);
-  }
-
-  addItem(){
+  bindAddItem(handler){
 
   }
 
-  removeItem(){
+  bindRemoveItem(handler){
 
   }
 
-  getTotal(){
-    
+  bindGetTotal(handler){
+
   }
 
 
