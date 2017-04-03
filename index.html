@@ -13,50 +13,62 @@
       <header class="body">
         <nav class="nav-menu">
           <div class="logo">
-            Dashboard
+            Seek Ads manager
           </div>
           <div class="name">
-            Ads manager
+            Login as: <span class="customer-name">{customerName}</span>
           </div>
         </nav>
       </header>
-      <section id="toolbar">
-        <div class="toolbar-actions">
-          <div class="action">
-              <button type="button" name="visit-site" class="button button--primary">Job Ads</button>
-          </div>
-          <div class="action">
-              <button type="button" name="visit-site" class="button button--primary">Companies</button>
-          </div>
-          <div class="action">
-              <button type="button" name="visit-site" class="button button--primary">Deals</button>
-          </div>
+      <section id="signin" class="section-area">
+        <div class="section-area__body">
+          <h3>Welcome</h3>
+          <form class="form" id="signin-form">
+            <div class="form-group">
+              <input class="username" value="Ford" placeholder="your username" autofocus>
+              <input class="password" placeholder="password">
+            </div>
+            <input type="submit" name="visit-site" class="button button--signin" value="Sign in">
+          </form>
         </div>
       </section>
-      <section class="ad-list-area">
-        <div class="ad-list-area__body">
-          <h3>Latest ads</h3>
-          <div style="overflow-x:auto;">
-            <table>
-              <thead>
-                <th>Company name</th>
-                <th>Job Ad type</th>
-                <th>Deal description</th>
-                <th>Valid until</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Nike</td>
-                  <td>Classic</td>
-                  <td>3 x 1</td>
-                  <td>12/05/2017</td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="store-container">
+        <section id="products" class="section-area section-area__products">
+          <div class="section-area__body">
+            <h3>Products</h3>
+            <ul class="product-list">
+              <li class="product">
+                <span class="product__information">
+                  <span class="product__name">{Awesome Ad}</span>
+                  <span class="product__price">${price}</span>
+                  <span class="product__description">Awesome Ad is an lorem ipsum dolor sit amet, magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</span>
+                </span>
+                <span class="actions">
+                  <button type="button" name="button">Add item</button>
+                </span>
+              </li>
+            </ul>
           </div>
-          <button type="button" name="visit-site" class="button button--see-more">See more</button>
-        </div>
-      </section>
+        </section>
+
+        <section id="checkout" class="section-area section-area__checkout" style="display:none">
+          <div class="section-area__body">
+            <h3>Your order</h3>
+            <div class="todoapp">
+              <div class="checkout-list">
+                <ul>
+                  <li>{item}</li>
+
+                </ul>
+                <div class="total">
+                  Total: <span>{$100000}</span>
+                </div>
+              </div>
+            </div>
+            <button type="button" name="visit-site" class="button button--see-more">Continue</button>
+          </div>
+        </section>
+      </div>
       <footer>
         <div class="footer-menu">
           <p>Open code test by @meligatt</p>
@@ -64,5 +76,10 @@
       </footer>
     </div>
   </div>
+
+  <script src="assets/javascript/Store.js"></script>
+  <script src="assets/javascript/View.js"></script>
+  <script src="assets/javascript/Controller.js"></script>
+  <script src="assets/javascript/App.js"></script>
 </body>
 </html>

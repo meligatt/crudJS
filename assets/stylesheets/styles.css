@@ -132,6 +132,16 @@ section {
   padding: 1.5em;
   width: 180px;
 }
+.button--signin {
+  background-color: #0D3880;
+  border: 2px solid #0D3880;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.6em;
+  padding: 1em;
+  width: 120px;
+}
 
 .button--open-modal {
   color: white;
@@ -248,31 +258,33 @@ section {
   }
 }
 
-.ad-list-area {
+.section-area {
   color: black;
   background-color: #EEE;
   padding: 1em;
 }
 
+
 @media (min-width:768px){
-  .ad-list-area {
+  .section-area {
     display: flex;
     flex-direction: row;
     padding: 2em;
   }
+
 }
 
-.ad-list-area__body{
+.section-area__body{
   padding: 1em;
   text-align: left;
 }
 
-.ad-list-area__body h3{
+.section-area__body h3{
   color: black;
   font-size: 1.3em;
   position: relative;
 }
-.ad-list-area__body h3:before{
+.section-area__body h3:before{
   content: "";
   position: absolute;
   width: 15%;
@@ -283,12 +295,12 @@ section {
   border-bottom: 1px solid #CFCFCF;
 }
 
-.ad-list-area__body p{
+.section-area__body p{
   color: #CFCFCF;
   font-size: 1em;
 }
 
-.ad-list-area .image-item {
+.section-area .image-item {
   padding: 5px 5px 0 5px;
 }
 .action {
@@ -423,4 +435,35 @@ tbody td {
 td:last-child {
   text-align: right;
   padding-right: 10px;
+}
+.store-container {
+  border: 1px solid #EEE;
+  display: flex;
+  flex-direction: row;
+}
+.section-area__products {
+  flex-grow: 4;
+}
+.section-area__checkout {
+  flex-grow: 1;
+}
+
+.product-list {
+  padding: 1em;
+  list-style: none;
+}
+.product {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #E60278;
+}
+.product__information {
+  padding: 1em;
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+}
+.actions {
+  padding: 1em;
+  margin: 1em;
 }
