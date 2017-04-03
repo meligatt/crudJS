@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ads system - by Melissa Gattoni</title>
+  <link rel="stylesheet" href="assets/stylesheets/styles.css" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+</head>
+<body>
+  <div  class="container">
+    <div class="main">
+      <header class="body">
+        <nav class="nav-menu">
+          <div class="logo">
+            Seek Ads manager
+          </div>
+          <div class="name">
+            Login as: <span class="customer-name">{customerName}</span>
+          </div>
+        </nav>
+      </header>
+      <section id="signin" class="section-area">
+        <div class="section-area__body">
+          <h3>Welcome</h3>
+          <form class="form" id="signin-form">
+            <div class="form-group">
+              <input class="username" value="Ford" placeholder="your username" autofocus>
+              <input class="password" placeholder="password">
+            </div>
+            <input type="submit" name="visit-site" class="button button--signin" value="Sign in">
+          </form>
+        </div>
+      </section>
+      <div class="store-container">
+        <section id="products" class="section-area section-area__products">
+          <div class="section-area__body">
+            <h3>Products</h3>
+            <ul class="product-list">
+              <li class="product">
+                <span class="product__information">
+                  <span class="product__name">{Awesome Ad}</span>
+                  <span class="product__price">${price}</span>
+                  <span class="product__description">Awesome Ad is an lorem ipsum dolor sit amet, magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</span>
+                </span>
+                <span class="actions">
+                  <button type="button" name="button">Add item</button>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="checkout" class="section-area section-area__checkout" style="display:none">
+          <div class="section-area__body">
+            <h3>Your order</h3>
+            <div class="todoapp">
+              <div class="checkout-list">
+                <ul>
+                  <li>{item}</li>
+
+                </ul>
+                <div class="total">
+                  Total: <span>{$100000}</span>
+                </div>
+              </div>
+            </div>
+            <button type="button" name="visit-site" class="button button--see-more">Continue</button>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <div class="footer-menu">
+          <p>Open code test by @meligatt</p>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="assets/javascript/Store.js"></script>
+  <script src="assets/javascript/View.js"></script>
+  <script src="assets/javascript/Controller.js"></script>
+  <script src="assets/javascript/App.js"></script>
+</body>
+</html>
