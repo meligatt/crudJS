@@ -12,6 +12,7 @@ class Controller {
     this.store.findUser(userCredentials, (data) => {
       if (data.hasOwnProperty('name')) {
         this.view.setLoggedInStatus(data, true);
+        window.location.hash = '#/checkout';
         this.view.setCheckoutVisibility(true);
       } else {
         this.view.clearSigninForm(data);

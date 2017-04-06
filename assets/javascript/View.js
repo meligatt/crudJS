@@ -68,7 +68,7 @@ class View {
     this.$signinForm.addEventListener('submit', (oEvent) => {
       oEvent.preventDefault();
       const { $username, $password } = this;
-      window.location.hash = '#/checkout';
+      // window.location.hash = '#/checkout';
       handler({ $username, $password });
     });
   }
