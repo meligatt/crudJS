@@ -11,6 +11,10 @@ class View {
     this.$checkoutSection = document.querySelector(`#checkout`);
     this.$customerNameSpan = document.querySelector(`.customer-name`);
 
+    // this.$producstAvailable= document.querySelector(`#products-available`);
+    this.$productList= document.querySelector(`.product-list`);
+
+    console.log("document.location.hash ", document.location);
     this.loggedIn = false;
   }
 
@@ -42,18 +46,38 @@ class View {
     console.log("msg: ",msg);
   }
 
+  showProducts(products){
+    const productList = products.reduce((a, product) => {
+      return a +
+      `<li class="product" id="item-${product.id}">
+        <span class="product__information">
+          <span class="product__name">${product.name}</span>
+          <span class="product__price">$${product.price}</span>
+          <span class="product__description">Awesome Ad is an lorem ipsum dolor sit amet, magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</span>
+        </span>
+        <span class="actions">
+          <button type="button" name="button">Add item</button>
+        </span>
+      </li>`;
+    }, '');
+
+    this.$productList.innerHTML = productList;
+  }
+
   bindLogin(handler) {
     this.$signinForm.addEventListener('submit', (oEvent) => {
       oEvent.preventDefault();
       const { $username, $password } = this;
+      window.location.hash = '#/checkout';
       handler({ $username, $password });
     });
   }
 
   bindLoadProducts(handler) {
-    if (this.loggedIn) {
+    window.addEventListener("hashchange", (oEvent) => {
       handler(this.loggedIn);
-    }
+    } , false);
+
   }
 
   bindAddItem(handler){

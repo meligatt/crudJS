@@ -20,9 +20,11 @@ class Controller {
   }
 
   loadProducts(loggedIn) {
-    this.store.getProducts((data) => {
-      
-    });
+    if (loggedIn) {
+      this.store.getProducts((data) => {
+        this.view.showProducts(data);
+      });
+    }
   }
 
 
