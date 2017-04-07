@@ -12,17 +12,17 @@ class View {
     this.$customerNameSpan = document.querySelector(`.customer-name`);
     this.$productList= document.querySelector(`.product-list`);
 
-    // this.delegate = (criteria, listener) => {
-    //   return ( (oEvent) => {
-    //     var el = oEvent.target;
-    //     do {
-    //       if (!criteria(el)) continue;
-    //       oEvent.delegateTarget = el;
-    //       listener.apply(this, arguments);
-    //       return;
-    //     } while( (el = el.parentNode) );
-    //   });
-    // };
+    this.delegate = (criteria, listener) => {
+      return function(oEvent) {
+        var el = oEvent.target;
+        do {
+          if (!criteria(el)) continue;
+          oEvent.delegateTarget = el;
+          listener.apply(this, arguments);
+          return;
+        } while( (el = el.parentNode) );
+      };
+    };
 
     this.loggedIn = false;
   }
@@ -90,31 +90,22 @@ class View {
 
   bindAddItem(handler){
 
-    var delegate = (criteria, listener) => {
-      return function(oEvent) {
-        var el = oEvent.target;
-        do {
-          if (!criteria(el)) continue;
-          oEvent.delegateTarget = el;
-          listener.apply(this, arguments);
-          return;
-        } while( (el = el.parentNode) );
-      };
-    };
-
     const buttonsFilter = (elem) => {
       return elem.classList && elem.classList.contains("btn");
     };
 
     const buttonHandler = (oEvent) => {
       var button = oEvent.delegateTarget;
-      if(!button.classList.contains("added"))
+      if(!button.classList.contains("added")) {
         button.classList.add("added");
-      else
+        }
+      else {
         button.classList.remove("added");
+      }
+      handler(button);
     };
 
-     this.$productList.addEventListener('click', delegate(buttonsFilter, buttonHandler));
+     this.$productList.addEventListener('click', this.delegate(buttonsFilter, buttonHandler));
 
   }
 
