@@ -90,26 +90,29 @@ class View {
 
   bindAddItem(handler){
 
-    var delegate = function(criteria, listener) {
-      return function(e) {
-        var el = e.target;
+    var delegate = (criteria, listener) => {
+      return function(oEvent) {
+        var el = oEvent.target;
         do {
           if (!criteria(el)) continue;
-          e.delegateTarget = el;
+          oEvent.delegateTarget = el;
           listener.apply(this, arguments);
           return;
         } while( (el = el.parentNode) );
       };
     };
 
-    const buttonsFilter = function(elem){
+    const buttonsFilter = (elem) => {
       return elem.classList && elem.classList.contains("btn");
-    }
+    };
 
-    const buttonHandler = function(oEvent){
-      return (console.log("button handler stuff!", oEvent.delegateTarget));
-    }
-
+    const buttonHandler = (oEvent) => {
+      var button = oEvent.delegateTarget;
+      if(!button.classList.contains("added"))
+        button.classList.add("added");
+      else
+        button.classList.remove("added");
+    };
 
      this.$productList.addEventListener('click', delegate(buttonsFilter, buttonHandler));
 
