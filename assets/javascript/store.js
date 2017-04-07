@@ -2,6 +2,7 @@ class Store {
   constructor(name){
     const localStorage = window.localStorage;
 
+    //TODO add this data to the db json file
     this.CUSTOMERS = [
       {
         name: 'Ford',

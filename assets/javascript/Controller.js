@@ -5,6 +5,8 @@ class Controller {
 
     view.bindLogin(this.login.bind(this));
     view.bindLoadProducts(this.loadProducts.bind(this));
+    view.bindAddItem(this.addItem.bind(this));
+
   }
 
   login({ $username , $password }) {
@@ -26,6 +28,10 @@ class Controller {
         this.view.showProducts(data);
       });
     }
+  }
+  addItem(buttonClicked) {
+
+    console.log("clicked!!", buttonClicked);
   }
 
 
