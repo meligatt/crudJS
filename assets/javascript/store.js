@@ -3,92 +3,38 @@ class Store {
     const localStorage = window.localStorage;
 
     //TODO add this data to the db json file
+    // deal: xy | discount | conditionalDiscount
     this.CUSTOMERS = [
       {
         name: 'Ford',
         pricingRules:
         [  {
             id: 'classic',
-            name: 'classic Ad',
-            discount: 'xy',
-            x: 3,
-            y: 2,
-            price: 200,
+            name: 'Classic Ad',
+            deal: 'xy',
+            dealDescription: 'Lorem ipsum xy',
+            x: 5,
+            y: 4,
             discountPrice: null,
           },
           {
             id: 'standout',
-            name: 'standout',
+            name: 'Standout Add',
+            deal: 'discount',
+            dealDescription: 'Lorem ipsum discount',
             x: null,
             y: null,
-            price: 350,
-            discountPrice: null,
-          }
-         ]
-      },
-      {
-        name: 'Nike',
-        pricingRules:
-        [  {
-            id: 'classic',
-            name: 'classic',
-            discount: 'xy',
-            x: 3,
-            y: 2,
-            price: 200,
-            discountPrice: null,
+            discountPrice: 309.99,
           },
           {
-            id: 'standout',
-            name: 'standout',
-            x: null,
-            y: null,
-            price: 350,
-            discountPrice: null,
-          }]
-      },
-      {
-        name: 'Apple',
-        pricingRules:
-        [  {
-            id: 'classic',
-            name: 'classic',
-            discount: 'xy',
+            id: 'premium',
+            name: 'Premium Add',
+            deal: 'conditionalDiscount',
+            dealDescription: 'Lorem ipsum conditional Discount',
             x: 3,
-            y: 2,
-            price: 200,
-            discountPrice: null,
-          },
-          {
-            id: 'standout',
-            name: 'standout',
-            x: null,
             y: null,
-            price: 350,
-            discountPrice: null,
-          }
-         ]
-      },
-      {
-        name: 'Unilever',
-        pricingRules:
-        [  {
-            id: 'classic',
-            name: 'classic',
-            discount: 'xy',
-            x: 3,
-            y: 2,
-            price: 200,
-            discountPrice: null,
+            discountPrice: 389.99,
           },
-          {
-            id: 'standout',
-            name: 'standout',
-            x: null,
-            y: null,
-            price: 350,
-            discountPrice: null,
-          }
          ]
       },
     ];
@@ -98,17 +44,17 @@ class Store {
       {
         id: 'classic',
         name: 'Classic Ad',
-        price:'269.99'
+        price:269.99
       },
       {
         id: 'standout',
         name: 'Standout Ad',
-        price:'322.99'
+        price: 322.99
       },
       {
         id: 'premium',
         name: 'Premium Ad',
-        price:'304.99'
+        price: 304.99
       },
     ];
     this.ORDER = [];
@@ -179,6 +125,7 @@ class Store {
 
   getProducts(currentUser, callback){
     const products = this.applyDeals();
+    console.log(products);
      callback(products);
   }
 

@@ -65,9 +65,9 @@ class View {
       `<li class="product" id="item-${product.id}">
         <span class="product__information">
           <span class="product__name">name:${product.name}</span>
-          <span class="product__price">$${product.price}</span>
-          <span class="product__priceRule"> ${product.pricingRule?  'special deal:'+product.pricingRule.price :  'price:'+product.price }</span>
-          <span class="product__description">Awesome Ad is an lorem ipsum dolor sit amet, magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</span>
+          <span class="product__price">name:${product.price}</span>
+          <span class="product__priceRule"> ${product.pricingRule ? 'Deal description: '+ product.pricingRule.dealDescription : 'no deal in this type of ad'}</span>
+          <span class="product__description">${product.name} is an lorem ipsum dolor sit amet, magna aliqua.</span>
         </span>
         <span class="actions">
           <button type="button" name="button" class="btn" data-item="${product.id}">Add item</button>
