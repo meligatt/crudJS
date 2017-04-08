@@ -8,7 +8,8 @@ class Store {
         name: 'Ford',
         pricingRules:
         [  {
-            name: 'classic',
+            id: 'classic',
+            name: 'classic Ad',
             discount: 'xy',
             x: 3,
             y: 2,
@@ -16,6 +17,7 @@ class Store {
             discountPrice: null,
           },
           {
+            id: 'standout',
             name: 'standout',
             x: null,
             y: null,
@@ -28,6 +30,7 @@ class Store {
         name: 'Nike',
         pricingRules:
         [  {
+            id: 'classic',
             name: 'classic',
             discount: 'xy',
             x: 3,
@@ -36,6 +39,7 @@ class Store {
             discountPrice: null,
           },
           {
+            id: 'standout',
             name: 'standout',
             x: null,
             y: null,
@@ -47,6 +51,7 @@ class Store {
         name: 'Apple',
         pricingRules:
         [  {
+            id: 'classic',
             name: 'classic',
             discount: 'xy',
             x: 3,
@@ -55,6 +60,7 @@ class Store {
             discountPrice: null,
           },
           {
+            id: 'standout',
             name: 'standout',
             x: null,
             y: null,
@@ -67,6 +73,7 @@ class Store {
         name: 'Unilever',
         pricingRules:
         [  {
+            id: 'classic',
             name: 'classic',
             discount: 'xy',
             x: 3,
@@ -75,6 +82,7 @@ class Store {
             discountPrice: null,
           },
           {
+            id: 'standout',
             name: 'standout',
             x: null,
             y: null,
@@ -137,14 +145,41 @@ class Store {
      });
 
     if (user.length > 0) {
+      this.setCurrentUser(user[0]);
       callback(user[0]);
     } else {
       callback('credentials not found');
     }
   }
 
-  getProducts(callback){
-    callback(this.PRODUCTS);
+  setCurrentUser(currentUser){
+    this.CURRENTUSER = currentUser;
+  }
+
+  getCurrentUser(){
+    return this.CURRENTUSER;
+  }
+
+   applyDealToItem(item) {
+     let newItem = item;
+     let currentUser = this.getCurrentUser();
+     currentUser.pricingRules.forEach( (pricingRule) => {
+       if (pricingRule.id === item.id) {
+         newItem.pricingRule = pricingRule;
+        }
+     });
+     return newItem;
+   }
+
+  applyDeals(){
+    this.newProducts = this.PRODUCTS;
+    const productsWithDeals = this.newProducts.map( this.applyDealToItem.bind(this) );
+    return productsWithDeals;
+  }
+
+  getProducts(currentUser, callback){
+    const products = this.applyDeals();
+     callback(products);
   }
 
   addItemToOrder(item, callback) {

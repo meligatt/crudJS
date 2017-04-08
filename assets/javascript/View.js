@@ -19,8 +19,6 @@ class View {
         do {
          if (!(el.classList && el.classList.contains("btn"))) continue;
           oEvent.delegateTarget = el;
-          console.log("this, arguments",this, arguments);
-          console.log("oEvent",oEvent.target);
           listener(oEvent);
           // listener.apply(this, arguments);
           return;
@@ -59,13 +57,16 @@ class View {
     console.log("msg: ",msg);
   }
 
+
+
   showProducts(products){
     const productList = products.reduce((a, product) => {
       return a +
       `<li class="product" id="item-${product.id}">
         <span class="product__information">
-          <span class="product__name">${product.name}</span>
+          <span class="product__name">name:${product.name}</span>
           <span class="product__price">$${product.price}</span>
+          <span class="product__priceRule"> ${product.pricingRule?  'special deal:'+product.pricingRule.price :  'price:'+product.price }</span>
           <span class="product__description">Awesome Ad is an lorem ipsum dolor sit amet, magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</span>
         </span>
         <span class="actions">

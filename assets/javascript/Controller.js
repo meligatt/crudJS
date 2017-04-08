@@ -23,8 +23,9 @@ class Controller {
   }
 
   loadProducts(loggedIn) {
+    const currentUser = this.store.getCurrentUser();
     if (loggedIn) {
-      this.store.getProducts((data) => {
+      this.store.getProducts(currentUser , (data) => {
         this.view.showProducts(data);
       });
     }
