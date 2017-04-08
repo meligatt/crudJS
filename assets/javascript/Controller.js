@@ -29,9 +29,14 @@ class Controller {
       });
     }
   }
-  addItem(buttonClicked) {
 
-    console.log("clicked!!", buttonClicked);
+  addItem(item) {
+    // get the item id that was added through clicking the add item button
+    // add the element to the store ORDER structure
+    // show otems in Your order section
+    this.store.addItemToOrder(item, (data) => {
+      this.view.updateOrderList(data);
+    });
   }
 
 

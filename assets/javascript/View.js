@@ -11,14 +11,18 @@ class View {
     this.$checkoutSection = document.querySelector(`#checkout`);
     this.$customerNameSpan = document.querySelector(`.customer-name`);
     this.$productList= document.querySelector(`.product-list`);
+    this.$checkoutList= document.querySelector(`.checkout-list`);
 
-    this.delegate = (criteria, listener) => {
+    this.delegate = (listener) => {
       return function(oEvent) {
         var el = oEvent.target;
         do {
-          if (!criteria(el)) continue;
+         if (!(el.classList && el.classList.contains("btn"))) continue;
           oEvent.delegateTarget = el;
-          listener.apply(this, arguments);
+          console.log("this, arguments",this, arguments);
+          console.log("oEvent",oEvent.target);
+          listener(oEvent);
+          // listener.apply(this, arguments);
           return;
         } while( (el = el.parentNode) );
       };
@@ -65,12 +69,20 @@ class View {
           <span class="product__description">Awesome Ad is an lorem ipsum dolor sit amet, magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</span>
         </span>
         <span class="actions">
-          <button type="button" name="button" class="btn">Add item</button>
+          <button type="button" name="button" class="btn" data-item="${product.id}">Add item</button>
         </span>
       </li>`;
     }, '');
 
     this.$productList.innerHTML = productList;
+  }
+
+  updateOrderList(items){
+    const itemList = items.reduce((a, item) => { return a +
+      `<li>${item}</li>`;
+      }, '');
+
+    this.$checkoutList.innerHTML = itemList;
   }
 
   bindLogin(handler) {
@@ -84,29 +96,24 @@ class View {
   bindLoadProducts(handler) {
     window.addEventListener("hashchange", (oEvent) => {
       handler(this.loggedIn);
-    } , false);
+    }, false);
 
   }
 
   bindAddItem(handler){
-
-    const buttonsFilter = (elem) => {
-      return elem.classList && elem.classList.contains("btn");
-    };
-
     const buttonHandler = (oEvent) => {
       var button = oEvent.delegateTarget;
       if(!button.classList.contains("added")) {
         button.classList.add("added");
-        }
+      }
       else {
         button.classList.remove("added");
       }
-      handler(button);
+
+      handler(button.getAttribute('data-item'));
     };
 
-     this.$productList.addEventListener('click', this.delegate(buttonsFilter, buttonHandler));
-
+    this.$productList.addEventListener('click', this.delegate(buttonHandler));
   }
 
   bindRemoveItem(handler){

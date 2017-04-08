@@ -103,8 +103,7 @@ class Store {
         price:'304.99'
       },
     ];
-
-
+    this.ORDER = [];
 
     let liveJobads;
 
@@ -147,4 +146,13 @@ class Store {
   getProducts(callback){
     callback(this.PRODUCTS);
   }
+
+  addItemToOrder(item, callback) {
+    // push an item to this.ORDER array with the recent item added to the listener
+    // return the whole array list to update the view.
+    this.ORDER.push(item);
+    callback(this.ORDER);
+  }
+
+
 }
