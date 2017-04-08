@@ -13,7 +13,7 @@
       <header class="body">
         <nav class="nav-menu">
           <div class="logo">
-            Seek Ads manager
+            <a href="/" style="color:white">Seek Ads manager</a>
           </div>
           <div class="name">
             Login as: <span class="customer-name">{customerName}</span>
@@ -29,6 +29,7 @@
               <input class="password" placeholder="password">
             </div>
             <input type="submit" name="visit-site" class="button button--signin" value="Sign in">
+            	<a href="#/checkout">checkout</a>
           </form>
         </div>
       </section>
@@ -36,32 +37,19 @@
         <section id="products" class="section-area section-area__products">
           <div class="section-area__body">
             <h3>Products</h3>
-            <ul class="product-list">
-              <li class="product">
-                <span class="product__information">
-                  <span class="product__name">{Awesome Ad}</span>
-                  <span class="product__price">${price}</span>
-                  <span class="product__description">Awesome Ad is an lorem ipsum dolor sit amet, magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</span>
-                </span>
-                <span class="actions">
-                  <button type="button" name="button">Add item</button>
-                </span>
-              </li>
-            </ul>
+             <ul class="product-list"></ul>
           </div>
         </section>
-
         <section id="checkout" class="section-area section-area__checkout" style="display:none">
           <div class="section-area__body">
             <h3>Your order</h3>
             <div class="todoapp">
-              <div class="checkout-list">
-                <ul>
-                  <li>{item}</li>
-
+              <div class="checkout-sidebar">
+                <ul class="checkout-list">
+                  <li>cart empty</li>
                 </ul>
                 <div class="total">
-                  Total: <span>{$100000}</span>
+                  Total: <span class="cart-total">$0</span>
                 </div>
               </div>
             </div>

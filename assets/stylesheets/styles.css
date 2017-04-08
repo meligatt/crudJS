@@ -467,3 +467,7 @@ td:last-child {
   padding: 1em;
   margin: 1em;
 }
+
+.added {
+  background-color: #CCC;
+}
