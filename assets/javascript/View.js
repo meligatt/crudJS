@@ -133,7 +133,8 @@ class View {
     const removeButtonHandler = (oEvent) => {
       const button = oEvent.delegateTarget;
       // remove from the DOM
-      const li = button.parentElement.parentElement;
+      // const li = button.parentElement.parentElement;
+      const li = button.closest('li');
       const deletedItemPosition = Array.prototype.indexOf.call(this.$checkoutList.childNodes, li);
       this.$checkoutList.removeChild(li);
       // invoke handler defined in controller: this will remove the item from the store
