@@ -3,84 +3,38 @@ class Store {
     const localStorage = window.localStorage;
 
     //TODO add this data to the db json file
+    // deal: xy | discount | conditionalDiscount
     this.CUSTOMERS = [
       {
         name: 'Ford',
         pricingRules:
         [  {
-            name: 'classic',
-            discount: 'xy',
-            x: 3,
-            y: 2,
-            price: 200,
+            id: 'classic',
+            name: 'Classic Ad',
+            deal: 'xy',
+            dealDescription: 'Lorem ipsum xy',
+            x: 5,
+            y: 4,
             discountPrice: null,
           },
           {
-            name: 'standout',
+            id: 'standout',
+            name: 'Standout Add',
+            deal: 'discount',
+            dealDescription: 'Lorem ipsum discount',
             x: null,
             y: null,
-            price: 350,
-            discountPrice: null,
-          }
-         ]
-      },
-      {
-        name: 'Nike',
-        pricingRules:
-        [  {
-            name: 'classic',
-            discount: 'xy',
-            x: 3,
-            y: 2,
-            price: 200,
-            discountPrice: null,
+            discountPrice: 309.99,
           },
           {
-            name: 'standout',
-            x: null,
-            y: null,
-            price: 350,
-            discountPrice: null,
-          }]
-      },
-      {
-        name: 'Apple',
-        pricingRules:
-        [  {
-            name: 'classic',
-            discount: 'xy',
+            id: 'premium',
+            name: 'Premium Add',
+            deal: 'conditionalDiscount',
+            dealDescription: 'Lorem ipsum conditional Discount',
             x: 3,
-            y: 2,
-            price: 200,
-            discountPrice: null,
-          },
-          {
-            name: 'standout',
-            x: null,
             y: null,
-            price: 350,
-            discountPrice: null,
-          }
-         ]
-      },
-      {
-        name: 'Unilever',
-        pricingRules:
-        [  {
-            name: 'classic',
-            discount: 'xy',
-            x: 3,
-            y: 2,
-            price: 200,
-            discountPrice: null,
+            discountPrice: 389.99,
           },
-          {
-            name: 'standout',
-            x: null,
-            y: null,
-            price: 350,
-            discountPrice: null,
-          }
          ]
       },
     ];
@@ -90,17 +44,17 @@ class Store {
       {
         id: 'classic',
         name: 'Classic Ad',
-        price:'269.99'
+        price:269.99
       },
       {
         id: 'standout',
         name: 'Standout Ad',
-        price:'322.99'
+        price: 322.99
       },
       {
         id: 'premium',
         name: 'Premium Ad',
-        price:'304.99'
+        price: 304.99
       },
     ];
     this.ORDER = [];
@@ -137,14 +91,41 @@ class Store {
      });
 
     if (user.length > 0) {
+      this.setCurrentUser(user[0]);
       callback(user[0]);
     } else {
       callback('credentials not found');
     }
   }
 
-  getProducts(callback){
-    callback(this.PRODUCTS);
+  setCurrentUser(currentUser){
+    this.CURRENTUSER = currentUser;
+  }
+
+  getCurrentUser(){
+    return this.CURRENTUSER;
+  }
+
+   applyDealToItem(item) {
+     let newItem = item;
+     let currentUser = this.getCurrentUser();
+     currentUser.pricingRules.forEach( (pricingRule) => {
+       if (pricingRule.id === item.id) {
+         newItem.pricingRule = pricingRule;
+        }
+     });
+     return newItem;
+   }
+
+  applyDeals(){
+    this.newProducts = this.PRODUCTS;
+    const productsWithDeals = this.newProducts.map( this.applyDealToItem.bind(this) );
+    return productsWithDeals;
+  }
+
+  getProducts(currentUser, callback){
+    const products = this.applyDeals();
+     callback(products);
   }
 
   addItemToOrder(item, callback) {
@@ -154,5 +135,9 @@ class Store {
     callback(this.ORDER);
   }
 
+  removeItemFromOrder(item, deletedItemPosition, callback){
+    this.ORDER.splice(deletedItemPosition,1);
+    callback(this.ORDER);
+  }
 
 }

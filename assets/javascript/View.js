@@ -13,17 +13,15 @@ class View {
     this.$productList= document.querySelector(`.product-list`);
     this.$checkoutList= document.querySelector(`.checkout-list`);
 
-    this.delegate = (listener) => {
+    this.delegate = (criteria, listener) => {
       return function(oEvent) {
         var el = oEvent.target;
         do {
-         if (!(el.classList && el.classList.contains("btn"))) continue;
-          oEvent.delegateTarget = el;
-          console.log("this, arguments",this, arguments);
-          console.log("oEvent",oEvent.target);
-          listener(oEvent);
-          // listener.apply(this, arguments);
-          return;
+         if (!criteria(el)) continue;
+            oEvent.delegateTarget = el;
+            listener(oEvent);
+            // listener.apply(this, arguments);
+            return;
         } while( (el = el.parentNode) );
       };
     };
@@ -59,17 +57,20 @@ class View {
     console.log("msg: ",msg);
   }
 
+
+
   showProducts(products){
     const productList = products.reduce((a, product) => {
       return a +
       `<li class="product" id="item-${product.id}">
         <span class="product__information">
-          <span class="product__name">${product.name}</span>
-          <span class="product__price">$${product.price}</span>
-          <span class="product__description">Awesome Ad is an lorem ipsum dolor sit amet, magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</span>
+          <span class="product__name">name:${product.name}</span>
+          <span class="product__price">price:${product.price}</span>
+          <span class="product__priceRule"> ${product.pricingRule ? 'Deal description: '+ product.pricingRule.dealDescription : 'no deal in this type of ad'}</span>
+          <span class="product__description">${product.name} is an lorem ipsum dolor sit amet.</span>
         </span>
         <span class="actions">
-          <button type="button" name="button" class="btn" data-item="${product.id}">Add item</button>
+          <button type="button" name="button" class="btn button button--additem" data-item="${product.id}">Add item</button>
         </span>
       </li>`;
     }, '');
@@ -78,8 +79,14 @@ class View {
   }
 
   updateOrderList(items){
-    const itemList = items.reduce((a, item) => { return a +
-      `<li>${item}</li>`;
+    const itemList = items.reduce((a, item) => {
+      return a +
+      `<li class="checkout-list--item">
+        <span class="actions">
+          <button type="button" name="button" class="btn button--remove" data-item="${item}">remove</button>
+        </span>
+        ${item}
+      </li>`;
       }, '');
 
     this.$checkoutList.innerHTML = itemList;
@@ -101,6 +108,11 @@ class View {
   }
 
   bindAddItem(handler){
+
+    var buttonsFilter = (elem) => {
+       return elem.classList && elem.classList.contains("btn");
+     };
+
     const buttonHandler = (oEvent) => {
       var button = oEvent.delegateTarget;
       if(!button.classList.contains("added")) {
@@ -109,15 +121,25 @@ class View {
       else {
         button.classList.remove("added");
       }
-
       handler(button.getAttribute('data-item'));
     };
-
-    this.$productList.addEventListener('click', this.delegate(buttonHandler));
+    this.$productList.addEventListener('click', this.delegate(buttonsFilter, buttonHandler));
   }
 
   bindRemoveItem(handler){
-
+    var removeButtonsFilter = (elem) => {
+      return elem.classList && elem.classList.contains("button--remove");
+    };
+    const removeButtonHandler = (oEvent) => {
+      const button = oEvent.delegateTarget;
+      // remove from the DOM
+      const li = button.parentElement.parentElement;
+      const deletedItemPosition = Array.prototype.indexOf.call(this.$checkoutList.childNodes, li);
+      this.$checkoutList.removeChild(li);
+      // invoke handler defined in controller: this will remove the item from the store
+      handler(button.getAttribute('data-item'),deletedItemPosition);
+    };
+    this.$checkoutList.addEventListener('click', this.delegate(removeButtonsFilter, removeButtonHandler));
   }
 
   bindGetTotal(handler){

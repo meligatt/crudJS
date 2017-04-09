@@ -6,19 +6,19 @@
 </head>
 <body>
   <div class="test">
-    <!-- <ul class="toolbar">
+    <ul class="toolbar">
       <li><button class="btn">Pencil</button></li>
       <li><button class="btn">Pen</button></li>
       <li><button class="btn">Eraser</button></li>
-    </ul> -->
+    </ul>
 
     <!--  more complex dom structure:-->
-    <ul class="toolbar">
+    <!-- <ul class="toolbar">
       <li><button class="btn"><i class="fa fa-pencil"></i> Pencil</button></li>
       <li><button class="btn"><i class="fa fa-paint-brush"></i> Pen</button></li>
       <li class="separator"></li>
       <li><button class="btn"><i class="fa fa-eraser"></i> Eraser</button></li>
-    </ul>
+    </ul> -->
 
   </div>
   <script type="text/javascript">
@@ -26,7 +26,7 @@
 source: https://codepen.io/32bitkid/post/understanding-delegated-javascript-events
 
 // Bitten by closures: try 1, wont work correctly:
-
+*/
   var buttons = document.querySelectorAll(".toolbar .btn");
 
   for(var i = 0; i < buttons.length; i++) {
@@ -39,7 +39,7 @@ source: https://codepen.io/32bitkid/post/understanding-delegated-javascript-even
       button.classList.remove("active");
     });
   }
-*/
+
 
 // ____________________________________________________________________________
 
@@ -101,33 +101,33 @@ for(var i = 0; i < buttons.length; i++) {
 // or if our target element is contained by an element we care about.
 
 // Let's make a little helper to handle that:
-
-var delegate = function(criteria, listener) {
-  return function(e) {
-    var el = e.target;
-    do {
-      if (!criteria(el)) continue;
-      e.delegateTarget = el;
-      listener.apply(this, arguments);
-      return;
-    } while( (el = el.parentNode) );
-  };
-};
-
-var toolbar = document.querySelector(".toolbar");
-
-var buttonsFilter = function(elem) {
-   return elem.classList && elem.classList.contains("btn");
- };
-
-var buttonHandler = function(e) {
-  var button = e.delegateTarget;
-  if(!button.classList.contains("active"))
-    button.classList.add("active");
-  else
-    button.classList.remove("active");
-};
-toolbar.addEventListener("click", delegate(buttonsFilter, buttonHandler));
+//
+// var delegate = function(criteria, listener) {
+//   return function(e) {
+//     var el = e.target;
+//     do {
+//       if (!criteria(el)) continue;
+//       e.delegateTarget = el;
+//       listener.apply(this, arguments);
+//       return;
+//     } while( (el = el.parentNode) );
+//   };
+// };
+//
+// var toolbar = document.querySelector(".toolbar");
+//
+// var buttonsFilter = function(elem) {
+//    return elem.classList && elem.classList.contains("btn");
+//  };
+//
+// var buttonHandler = function(e) {
+//   var button = e.delegateTarget;
+//   if(!button.classList.contains("active"))
+//     button.classList.add("active");
+//   else
+//     button.classList.remove("active");
+// };
+// toolbar.addEventListener("click", delegate(buttonsFilter, buttonHandler));
 
 
 

@@ -6,6 +6,7 @@ class Controller {
     view.bindLogin(this.login.bind(this));
     view.bindLoadProducts(this.loadProducts.bind(this));
     view.bindAddItem(this.addItem.bind(this));
+    view.bindRemoveItem(this.removeItem.bind(this));
 
   }
 
@@ -23,8 +24,9 @@ class Controller {
   }
 
   loadProducts(loggedIn) {
+    const currentUser = this.store.getCurrentUser();
     if (loggedIn) {
-      this.store.getProducts((data) => {
+      this.store.getProducts(currentUser, (data) => {
         this.view.showProducts(data);
       });
     }
@@ -39,5 +41,10 @@ class Controller {
     });
   }
 
+  removeItem(item, deletedItemPosition) {
+    this.store.removeItemFromOrder(item, deletedItemPosition, (data) => {
+      // this.view.updateOrderList(data);
+    });
+  }
 
 }
