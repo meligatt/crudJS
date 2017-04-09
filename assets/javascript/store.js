@@ -125,7 +125,6 @@ class Store {
 
   getProducts(currentUser, callback){
     const products = this.applyDeals();
-    console.log(products);
      callback(products);
   }
 
@@ -136,5 +135,9 @@ class Store {
     callback(this.ORDER);
   }
 
+  removeItemFromOrder(item, deletedItemPosition, callback){
+    this.ORDER.splice(deletedItemPosition,1);
+    callback(this.ORDER);
+  }
 
 }

@@ -13,15 +13,15 @@ class View {
     this.$productList= document.querySelector(`.product-list`);
     this.$checkoutList= document.querySelector(`.checkout-list`);
 
-    this.delegate = (listener) => {
+    this.delegate = (criteria, listener) => {
       return function(oEvent) {
         var el = oEvent.target;
         do {
-         if (!(el.classList && el.classList.contains("btn"))) continue;
-          oEvent.delegateTarget = el;
-          listener(oEvent);
-          // listener.apply(this, arguments);
-          return;
+         if (!criteria(el)) continue;
+            oEvent.delegateTarget = el;
+            listener(oEvent);
+            // listener.apply(this, arguments);
+            return;
         } while( (el = el.parentNode) );
       };
     };
@@ -79,10 +79,11 @@ class View {
   }
 
   updateOrderList(items){
-    const itemList = items.reduce((a, item) => { return a +
+    const itemList = items.reduce((a, item) => {
+      return a +
       `<li class="checkout-list--item">
         <span class="actions">
-          <button type="button" name="button" class="btn button--remove">remove</button>
+          <button type="button" name="button" class="btn button--remove" data-item="${item}">remove</button>
         </span>
         ${item}
       </li>`;
@@ -107,6 +108,11 @@ class View {
   }
 
   bindAddItem(handler){
+
+    var buttonsFilter = (elem) => {
+       return elem.classList && elem.classList.contains("btn");
+     };
+
     const buttonHandler = (oEvent) => {
       var button = oEvent.delegateTarget;
       if(!button.classList.contains("added")) {
@@ -115,15 +121,25 @@ class View {
       else {
         button.classList.remove("added");
       }
-
       handler(button.getAttribute('data-item'));
     };
-
-    this.$productList.addEventListener('click', this.delegate(buttonHandler));
+    this.$productList.addEventListener('click', this.delegate(buttonsFilter, buttonHandler));
   }
 
   bindRemoveItem(handler){
-
+    var removeButtonsFilter = (elem) => {
+      return elem.classList && elem.classList.contains("button--remove");
+    };
+    const removeButtonHandler = (oEvent) => {
+      const button = oEvent.delegateTarget;
+      // remove from the DOM
+      const li = button.parentElement.parentElement;
+      const deletedItemPosition = Array.prototype.indexOf.call(this.$checkoutList.childNodes, li);
+      this.$checkoutList.removeChild(li);
+      // invoke handler defined in controller: this will remove the item from the store
+      handler(button.getAttribute('data-item'),deletedItemPosition);
+    };
+    this.$checkoutList.addEventListener('click', this.delegate(removeButtonsFilter, removeButtonHandler));
   }
 
   bindGetTotal(handler){
