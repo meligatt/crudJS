@@ -156,6 +156,23 @@ class Store {
   }
 
   updateOrderTotal(itemObject){
-    console.log(itemObject);
+    /*
+     need: counter of how many of each ad types are added to order,
+     so it can applies the rules
+    */
+
+    switch (itemObject.deal) {
+      case 'xy':
+      console.log('applying a xy rule');
+        break;
+      case 'discount':
+      console.log('applying a discount rule');
+        break;
+      case 'conditionalDiscount':
+      console.log('applying a conditionalDiscount rule');
+        break;
+      default:
+
+    }
   }
 }
