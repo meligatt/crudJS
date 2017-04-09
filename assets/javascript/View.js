@@ -65,12 +65,12 @@ class View {
       `<li class="product" id="item-${product.id}">
         <span class="product__information">
           <span class="product__name">name:${product.name}</span>
-          <span class="product__price">name:${product.price}</span>
+          <span class="product__price">price:${product.price}</span>
           <span class="product__priceRule"> ${product.pricingRule ? 'Deal description: '+ product.pricingRule.dealDescription : 'no deal in this type of ad'}</span>
-          <span class="product__description">${product.name} is an lorem ipsum dolor sit amet, magna aliqua.</span>
+          <span class="product__description">${product.name} is an lorem ipsum dolor sit amet.</span>
         </span>
         <span class="actions">
-          <button type="button" name="button" class="btn" data-item="${product.id}">Add item</button>
+          <button type="button" name="button" class="btn button button--additem" data-item="${product.id}">Add item</button>
         </span>
       </li>`;
     }, '');
@@ -80,7 +80,12 @@ class View {
 
   updateOrderList(items){
     const itemList = items.reduce((a, item) => { return a +
-      `<li>${item}</li>`;
+      `<li class="checkout-list--item">
+        <span class="actions">
+          <button type="button" name="button" class="btn button--remove">remove</button>
+        </span>
+        ${item}
+      </li>`;
       }, '');
 
     this.$checkoutList.innerHTML = itemList;
