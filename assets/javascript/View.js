@@ -12,6 +12,7 @@ class View {
     this.$customerNameSpan = document.querySelector(`.customer-name`);
     this.$productList= document.querySelector(`.product-list`);
     this.$checkoutList= document.querySelector(`.checkout-list`);
+    this.$totalSpan = document.querySelector(`.cart-total`);
 
     this.delegate = (criteria, listener) => {
       return function(oEvent) {
@@ -79,6 +80,7 @@ class View {
   }
 
   updateOrderList(items){
+    // console.log(items);
     const itemList = items.reduce((a, item) => {
       return a +
       `<li class="checkout-list--item">
@@ -90,6 +92,10 @@ class View {
       }, '');
 
     this.$checkoutList.innerHTML = itemList;
+
+  }
+  updateOrderTotal(total) {
+    this.$totalSpan.textContent = total;
   }
 
   bindLogin(handler) {
@@ -108,7 +114,6 @@ class View {
   }
 
   bindAddItem(handler){
-
     var buttonsFilter = (elem) => {
        return elem.classList && elem.classList.contains("btn");
      };
@@ -142,11 +147,5 @@ class View {
     };
     this.$checkoutList.addEventListener('click', this.delegate(removeButtonsFilter, removeButtonHandler));
   }
-
-  bindGetTotal(handler){
-
-  }
-
-
 
 }

@@ -58,7 +58,8 @@ class Store {
       },
     ];
     this.ORDER = [];
-
+    this.productsWithDeals =[];
+    this.OrderTotal = 0;
     let liveJobads;
 
     this.getLocalStorage = () => {
@@ -108,6 +109,7 @@ class Store {
 
    applyDealToItem(item) {
      let newItem = item;
+    //  console.log("newItem ",newItem);
      let currentUser = this.getCurrentUser();
      currentUser.pricingRules.forEach( (pricingRule) => {
        if (pricingRule.id === item.id) {
@@ -119,8 +121,8 @@ class Store {
 
   applyDeals(){
     this.newProducts = this.PRODUCTS;
-    const productsWithDeals = this.newProducts.map( this.applyDealToItem.bind(this) );
-    return productsWithDeals;
+    this.productsWithDeals = this.newProducts.map( this.applyDealToItem.bind(this) );
+    return this.productsWithDeals;
   }
 
   getProducts(currentUser, callback){
@@ -132,7 +134,20 @@ class Store {
     // push an item to this.ORDER array with the recent item added to the listener
     // return the whole array list to update the view.
     this.ORDER.push(item);
+    const itemObject = this.getItemInfo(item);
+    this.updateOrderTotal(itemObject);
     callback(this.ORDER);
+  }
+
+  getItemInfo(item){
+    let itemInfo;
+    let currentUser = this.getCurrentUser();
+    currentUser.pricingRules.forEach( (pricingRule) => {
+      if (pricingRule.id === item) {
+         itemInfo = pricingRule;
+       }
+    });
+    return itemInfo;
   }
 
   removeItemFromOrder(item, deletedItemPosition, callback){
@@ -140,4 +155,7 @@ class Store {
     callback(this.ORDER);
   }
 
+  updateOrderTotal(itemObject){
+    console.log(itemObject);
+  }
 }
