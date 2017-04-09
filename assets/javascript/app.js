@@ -1,7 +1,7 @@
 const store = new Store();
-
 const view = new View();
 const controller = new Controller(store, view);
+ 
 
 // const checkoutView = new CheckoutView();
 // const checkoutController = new CheckoutController(checkoutView);

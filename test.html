@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>testing JS fundamentals</title>
+</head>
+<body>
+  <div class="test">
+    <ul class="toolbar">
+      <li><button class="btn">Pencil</button></li>
+      <li><button class="btn">Pen</button></li>
+      <li><button class="btn">Eraser</button></li>
+    </ul>
+
+    <!--  more complex dom structure:-->
+    <!-- <ul class="toolbar">
+      <li><button class="btn"><i class="fa fa-pencil"></i> Pencil</button></li>
+      <li><button class="btn"><i class="fa fa-paint-brush"></i> Pen</button></li>
+      <li class="separator"></li>
+      <li><button class="btn"><i class="fa fa-eraser"></i> Eraser</button></li>
+    </ul> -->
+
+  </div>
+  <script type="text/javascript">
+/*
+source: https://codepen.io/32bitkid/post/understanding-delegated-javascript-events
+
+// Bitten by closures: try 1, wont work correctly:
+*/
+  var buttons = document.querySelectorAll(".toolbar .btn");
+
+  for(var i = 0; i < buttons.length; i++) {
+    var button = buttons[i];
+    button.addEventListener("click", function() {
+      console.log('click!');
+      if(!button.classList.contains("active"))
+      button.classList.add("active");
+      else
+      button.classList.remove("active");
+    });
+  }
+
+
+// ____________________________________________________________________________
+
+// try 2, will work, but We are allocating a bunch of function that we don't have to.
+/*
+var buttons = document.querySelectorAll(".toolbar button");
+var createToolBarButtonHandler = function(button) {
+  return function() {
+    if(!button.classList.contains("active"))
+      button.classList.add("active");
+    else
+      button.classList.remove("active");
+  };
+};
+
+for(var i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener("click", createToolBarButtonHandler(buttons[i]));
+}
+*/
+
+// ____________________________________________________________________________
+
+// Let's try to refactor so that we can share a single function that is attached multiple times.
+/*
+var buttons = document.querySelectorAll(".toolbar button");
+
+var toolbarButtonHandler = function(e) {
+  var button = e.currentTarget;
+  console.log(button);
+  if(!button.classList.contains("active"))
+    button.classList.add("active");
+  else
+    button.classList.remove("active");
+};
+
+for(var i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener("click", toolbarButtonHandler);
+}
+*/
+
+// Delegated events are events that are attached to a parent element,
+// but only get executed when the target of the event matches some criteria.
+// So, since we know that any clicks on the button elements will get bubbled
+ // through the UL.toolbar element, let's put the event handler there instead.
+ // We'll have to adjust our handler a little bit from before;
+// differences between e.target and e.currentTarget!!
+
+// var toolbar = document.querySelector(".toolbar");
+// toolbar.addEventListener("click", function(e) {
+//   var button = e.target;
+//   if(!button.classList.contains("active"))
+//     button.classList.add("active");
+//   else
+//     button.classList.remove("active");
+// });
+
+
+// We need a way to filter our events so we only react to elements we care about,
+// or if our target element is contained by an element we care about.
+
+// Let's make a little helper to handle that:
+//
+// var delegate = function(criteria, listener) {
+//   return function(e) {
+//     var el = e.target;
+//     do {
+//       if (!criteria(el)) continue;
+//       e.delegateTarget = el;
+//       listener.apply(this, arguments);
+//       return;
+//     } while( (el = el.parentNode) );
+//   };
+// };
+//
+// var toolbar = document.querySelector(".toolbar");
+//
+// var buttonsFilter = function(elem) {
+//    return elem.classList && elem.classList.contains("btn");
+//  };
+//
+// var buttonHandler = function(e) {
+//   var button = e.delegateTarget;
+//   if(!button.classList.contains("active"))
+//     button.classList.add("active");
+//   else
+//     button.classList.remove("active");
+// };
+// toolbar.addEventListener("click", delegate(buttonsFilter, buttonHandler));
+
+
+
+  </script>
+</body>
+</html>
