@@ -60,6 +60,11 @@ class Store {
     this.ORDER = [];
     this.productsWithDeals =[];
     this.OrderTotal = 0;
+    this.counter = {
+      classic: 0,
+      standout:0,
+      premium: 0,
+    }
     let liveJobads;
 
     this.getLocalStorage = () => {
@@ -134,7 +139,11 @@ class Store {
     // push an item to this.ORDER array with the recent item added to the listener
     // return the whole array list to update the view.
     this.ORDER.push(item);
+
     const itemObject = this.getItemInfo(item);
+
+    console.log("itemObject",itemObject);
+
     this.updateOrderTotal(itemObject);
     callback(this.ORDER);
   }
@@ -163,11 +172,19 @@ class Store {
 
     switch (itemObject.deal) {
       case 'xy':
-      console.log('applying a xy rule');
+      if (this.counter.classic === itemObject.deal.x) {
+        this.counter.classic -= 1;
+      } else {
+        this.counter.classic += 1;
+      }
+      // apply the order total calculation here 
+
         break;
+
       case 'discount':
       console.log('applying a discount rule');
         break;
+
       case 'conditionalDiscount':
       console.log('applying a conditionalDiscount rule');
         break;
