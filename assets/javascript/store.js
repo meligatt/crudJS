@@ -185,10 +185,10 @@ class Store {
     // return the whole array list to update the view.
     this.ORDER.push(item);
     const itemObject = this.getItemInfo(item);
-    console.log("itemObject",itemObject);
     const counter = this.itemCounter(item);
-    this.updateOrderTotal(itemObject, counter);
-    callback(this.ORDER, this.counter);
+    const total = this.updateOrderTotal(itemObject, counter);
+    // callback(this.ORDER, this.counter);
+    callback(this.ORDER, total);
 
   }
 
@@ -223,8 +223,9 @@ class Store {
         if ( remainder === 0 ) {
          this.counter[itemObject.id]['free']++;
         }
-        // const totalItems = this.counter[itemObject.id]['paid'] - this.counter[itemObject.id]['free'];
-        // totalToPay += totalItems * 
+        const totalItems = this.counter[itemObject.id]['paid'] - this.counter[itemObject.id]['free'];
+        const totalToPay = totalItems * itemObject.price;
+        return totalToPay;
         break;
 
       case 'discount':

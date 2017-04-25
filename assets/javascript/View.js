@@ -95,7 +95,7 @@ class View {
   }
 
   updateOrderTotal(total) {
-    this.$totalSpan.textContent = total;
+    this.$totalSpan.textContent = `$ ${total}`;
   }
 
   bindLogin(handler) {
