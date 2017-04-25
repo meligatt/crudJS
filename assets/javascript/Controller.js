@@ -37,9 +37,9 @@ class Controller {
     // add the element to the store ORDER structure
     // show otems in Your order section
 
-    this.store.addItemToOrder(item, (data) => {
-      this.view.updateOrderList(data);
-
+    this.store.addItemToOrder(item, (items, counter) => {
+      this.view.updateOrderList(items);
+      // this.view.updateOrderTotal(itemsToPay);
     });
   }
 

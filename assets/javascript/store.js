@@ -4,6 +4,7 @@ class Store {
 
     //TODO add this data to the db json file
     // deal: xy | discount | conditionalDiscount
+
     this.CUSTOMERS = [
       {
         name: 'Ford',
@@ -39,6 +40,41 @@ class Store {
       },
     ];
 
+    // this.CUSTOMERS = [
+    //   {
+    //     name: 'Ford',
+    //     pricingRules:
+    //     [  {
+    //         id: 'classic',
+    //         name: 'Classic Ad',
+    //         deal: 'xy',
+    //         dealDescription: 'Lorem ipsum xy',
+    //         x: 5,
+    //         y: 4,
+    //         discountPrice: null,
+    //       },
+    //       {
+    //         id: 'standout',
+    //         name: 'Standout Add',
+    //         deal: 'xy',
+    //         dealDescription: 'Lorem ipsum xy',
+    //         x: 4,
+    //         y: 2,
+    //         discountPrice: null,
+    //       },
+    //       {
+    //         id: 'premium',
+    //         name: 'Premium Add',
+    //         deal: 'conditionalDiscount',
+    //         dealDescription: 'Lorem ipsum conditional Discount',
+    //         x: 3,
+    //         y: null,
+    //         discountPrice: 389.99,
+    //       },
+    //      ]
+    //   },
+    // ];
+
     this.PRODUCTS =
     [
       {
@@ -61,9 +97,18 @@ class Store {
     this.productsWithDeals =[];
     this.OrderTotal = 0;
     this.counter = {
-      classic: 0,
-      standout:0,
-      premium: 0,
+      classic: {
+        paid: 0,
+        free:0,
+      },
+      standout: {
+        paid: 0,
+        free: 0,
+      },
+      premium: {
+        paid: 0,
+        free:0,
+      },
     }
     let liveJobads;
 
@@ -139,13 +184,12 @@ class Store {
     // push an item to this.ORDER array with the recent item added to the listener
     // return the whole array list to update the view.
     this.ORDER.push(item);
-
     const itemObject = this.getItemInfo(item);
-
     console.log("itemObject",itemObject);
+    const counter = this.itemCounter(item);
+    this.updateOrderTotal(itemObject, counter);
+    callback(this.ORDER, this.counter);
 
-    this.updateOrderTotal(itemObject);
-    callback(this.ORDER);
   }
 
   getItemInfo(item){
@@ -156,6 +200,13 @@ class Store {
          itemInfo = pricingRule;
        }
     });
+     const product = this.PRODUCTS.filter( (product) => {
+        if (product.id === item) {
+          return  true;
+        }
+     });
+
+     itemInfo.price = product[0].price;
     return itemInfo;
   }
 
@@ -164,32 +215,31 @@ class Store {
     callback(this.ORDER);
   }
 
-  updateOrderTotal(itemObject){
-    /*
-     need: counter of how many of each ad types are added to order,
-     so it can applies the rules
-    */
-
+  updateOrderTotal(itemObject, counter){
     switch (itemObject.deal) {
       case 'xy':
-      if (this.counter.classic === itemObject.deal.x) {
-        this.counter.classic -= 1;
-      } else {
-        this.counter.classic += 1;
-      }
-      // apply the order total calculation here 
-
+      // console.log("itemObject",itemObject);
+        const remainder = counter[itemObject.id]['paid'] % itemObject.y;
+        if ( remainder === 0 ) {
+         this.counter[itemObject.id]['free']++;
+        }
+        // const totalItems = this.counter[itemObject.id]['paid'] - this.counter[itemObject.id]['free'];
+        // totalToPay += totalItems * 
         break;
 
       case 'discount':
-      console.log('applying a discount rule');
+
         break;
 
       case 'conditionalDiscount':
-      console.log('applying a conditionalDiscount rule');
+
         break;
       default:
-
     }
+   }
+
+  itemCounter(itemId){
+    this.counter[itemId]['paid']++;
+    return this.counter;
   }
 }

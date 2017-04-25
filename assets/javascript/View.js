@@ -92,8 +92,8 @@ class View {
       }, '');
 
     this.$checkoutList.innerHTML = itemList;
-
   }
+
   updateOrderTotal(total) {
     this.$totalSpan.textContent = total;
   }
