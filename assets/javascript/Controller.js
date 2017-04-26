@@ -36,14 +36,16 @@ class Controller {
     // get the item id that was added through clicking the add item button
     // add the element to the store ORDER structure
     // show otems in Your order section
-    this.store.addItemToOrder(item, (data) => {
-      this.view.updateOrderList(data);
+
+    this.store.addItemToOrder(item, (items, total) => {
+      this.view.updateOrderList(items);
+      this.view.updateOrderTotal(total);
     });
   }
 
   removeItem(item, deletedItemPosition) {
     this.store.removeItemFromOrder(item, deletedItemPosition, (data) => {
-      // this.view.updateOrderList(data);
+      this.view.updateOrderTotal(data);
     });
   }
 

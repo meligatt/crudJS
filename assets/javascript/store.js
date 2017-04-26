@@ -4,6 +4,7 @@ class Store {
 
     //TODO add this data to the db json file
     // deal: xy | discount | conditionalDiscount
+
     this.CUSTOMERS = [
       {
         name: 'Ford',
@@ -39,6 +40,41 @@ class Store {
       },
     ];
 
+    // this.CUSTOMERS = [
+    //   {
+    //     name: 'Ford',
+    //     pricingRules:
+    //     [  {
+    //         id: 'classic',
+    //         name: 'Classic Ad',
+    //         deal: 'xy',
+    //         dealDescription: 'Lorem ipsum xy',
+    //         x: 5,
+    //         y: 4,
+    //         discountPrice: null,
+    //       },
+    //       {
+    //         id: 'standout',
+    //         name: 'Standout Add',
+    //         deal: 'xy',
+    //         dealDescription: 'Lorem ipsum xy',
+    //         x: 3,
+    //         y: 2,
+    //         discountPrice: null,
+    //       },
+    //       {
+    //         id: 'premium',
+    //         name: 'Premium Add',
+    //         deal: 'conditionalDiscount',
+    //         dealDescription: 'Lorem ipsum conditional Discount',
+    //         x: 3,
+    //         y: null,
+    //         discountPrice: 389.99,
+    //       },
+    //      ]
+    //   },
+    // ];
+
     this.PRODUCTS =
     [
       {
@@ -58,6 +94,27 @@ class Store {
       },
     ];
     this.ORDER = [];
+    this.productsWithDeals =[];
+    this.OrderTotal = 0;
+    this.counter = {
+      classic: {
+        paid: 0,
+        free:0,
+      },
+      standout: {
+        paid: 0,
+        free: 0,
+      },
+      premium: {
+        paid: 0,
+        free:0,
+      },
+    }
+    this.TOTALS = {
+      classic: 0,
+      standout: 0,
+      premium: 0
+    }
 
     let liveJobads;
 
@@ -108,6 +165,7 @@ class Store {
 
    applyDealToItem(item) {
      let newItem = item;
+    //  console.log("newItem ",newItem);
      let currentUser = this.getCurrentUser();
      currentUser.pricingRules.forEach( (pricingRule) => {
        if (pricingRule.id === item.id) {
@@ -119,8 +177,8 @@ class Store {
 
   applyDeals(){
     this.newProducts = this.PRODUCTS;
-    const productsWithDeals = this.newProducts.map( this.applyDealToItem.bind(this) );
-    return productsWithDeals;
+    this.productsWithDeals = this.newProducts.map( this.applyDealToItem.bind(this) );
+    return this.productsWithDeals;
   }
 
   getProducts(currentUser, callback){
@@ -132,7 +190,31 @@ class Store {
     // push an item to this.ORDER array with the recent item added to the listener
     // return the whole array list to update the view.
     this.ORDER.push(item);
-    callback(this.ORDER);
+    const itemObject = this.getItemInfo(item);
+    console.log("itemObject",itemObject);
+    const counter = this.itemCounter(item);
+    const total = this.updateOrderTotal(itemObject, counter);
+    // callback(this.ORDER, this.counter);
+    callback(this.ORDER, total);
+
+  }
+
+  getItemInfo(item){
+    let itemInfo;
+    let currentUser = this.getCurrentUser();
+    currentUser.pricingRules.forEach( (pricingRule) => {
+      if (pricingRule.id === item) {
+         itemInfo = pricingRule;
+       }
+    });
+     const product = this.PRODUCTS.filter( (product) => {
+        if (product.id === item) {
+          return  true;
+        }
+     });
+
+     itemInfo.price = product[0].price;
+    return itemInfo;
   }
 
   removeItemFromOrder(item, deletedItemPosition, callback){
@@ -140,4 +222,50 @@ class Store {
     callback(this.ORDER);
   }
 
+  updateOrderTotal(itemObject, counter){
+    switch (itemObject.deal) {
+      case 'xy':
+        const remainder = counter[itemObject.id]['paid'] % itemObject.y;
+        if ( remainder === 0 ) {
+          this.counter[itemObject.id]['free']++;
+        }
+        const totalItems = this.counter[itemObject.id]['paid'] - this.counter[itemObject.id]['free'];
+        this.TOTALS[itemObject.id] = totalItems * itemObject.price;
+        console.log('xy',this.TOTALS);
+      break;
+
+      case 'discount':
+        this.TOTALS[itemObject.id] = this.counter[itemObject.id]['paid'] * itemObject.discountPrice;
+        console.log("discount",this.TOTALS);
+      break;
+
+      case 'conditionalDiscount':
+
+      break;
+    }
+  }
+
+  //  _calculateTotal(){
+  //    switch (itemObject.id) {
+  //      case 'classic':
+  //        const totalItems = this.counter[itemObject.id]['paid'] - this.counter[itemObject.id]['free'];
+  //        // const totalToPay = totalItems * itemObject.price;
+  //        // console.log(totalToPay - discount);
+  //        // return (totalToPay - discount);
+   //
+  //        break;
+  //      case 'premium':
+   //
+  //        break;
+  //      case 'standout':
+   //
+  //        break;
+  //    }
+  //       //add all
+  //  }
+
+  itemCounter(itemId){
+    this.counter[itemId]['paid']++;
+    return this.counter;
+  }
 }
