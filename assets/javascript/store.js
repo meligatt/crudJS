@@ -58,7 +58,7 @@ class Store {
     //         name: 'Standout Add',
     //         deal: 'xy',
     //         dealDescription: 'Lorem ipsum xy',
-    //         x: 4,
+    //         x: 3,
     //         y: 2,
     //         discountPrice: null,
     //       },
@@ -110,6 +110,12 @@ class Store {
         free:0,
       },
     }
+    this.TOTALS = {
+      classic: 0,
+      standout: 0,
+      premium: 0
+    }
+
     let liveJobads;
 
     this.getLocalStorage = () => {
@@ -185,6 +191,7 @@ class Store {
     // return the whole array list to update the view.
     this.ORDER.push(item);
     const itemObject = this.getItemInfo(item);
+    console.log("itemObject",itemObject);
     const counter = this.itemCounter(item);
     const total = this.updateOrderTotal(itemObject, counter);
     // callback(this.ORDER, this.counter);
@@ -218,26 +225,44 @@ class Store {
   updateOrderTotal(itemObject, counter){
     switch (itemObject.deal) {
       case 'xy':
-      // console.log("itemObject",itemObject);
         const remainder = counter[itemObject.id]['paid'] % itemObject.y;
         if ( remainder === 0 ) {
-         this.counter[itemObject.id]['free']++;
+          this.counter[itemObject.id]['free']++;
         }
         const totalItems = this.counter[itemObject.id]['paid'] - this.counter[itemObject.id]['free'];
-        const totalToPay = totalItems * itemObject.price;
-        return totalToPay;
-        break;
+        this.TOTALS[itemObject.id] = totalItems * itemObject.price;
+        console.log('xy',this.TOTALS);
+      break;
 
       case 'discount':
-
-        break;
+        this.TOTALS[itemObject.id] = this.counter[itemObject.id]['paid'] * itemObject.discountPrice;
+        console.log("discount",this.TOTALS);
+      break;
 
       case 'conditionalDiscount':
 
-        break;
-      default:
+      break;
     }
-   }
+  }
+
+  //  _calculateTotal(){
+  //    switch (itemObject.id) {
+  //      case 'classic':
+  //        const totalItems = this.counter[itemObject.id]['paid'] - this.counter[itemObject.id]['free'];
+  //        // const totalToPay = totalItems * itemObject.price;
+  //        // console.log(totalToPay - discount);
+  //        // return (totalToPay - discount);
+   //
+  //        break;
+  //      case 'premium':
+   //
+  //        break;
+  //      case 'standout':
+   //
+  //        break;
+  //    }
+  //       //add all
+  //  }
 
   itemCounter(itemId){
     this.counter[itemId]['paid']++;
